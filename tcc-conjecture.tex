@@ -1,0 +1,105 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\begin{document}
+\title{Conjecture about tautologies, contigencies
+and contradictions}
+\author{Günter Hofer}
+\maketitle
+\newpage 
+\paragraph{Introduction}
+The satisfiability problem is not easy. With n variables there are $2^n$ possibilities in propositional logic. But when you only need to know if a given Boolean formula
+is satisfiable, there is a simple method.
+
+
+\[A \land B := A + B - A \times B\]
+\[A \lor B 		:= A + B - A \times B\]
+\[\lnot A := 1 - A\]
+\[A \supset B := 1 - (x \times (1 - y))\]
+\[A \equiv B := (A \supset B) \times (B \supset A) \]
+\[A \oplus B := 1 - (A \equiv B)\]
+\[A \bar{\land} B := 1- A \times B\]
+\[A \bar{\lor}B := 1 - (A + B - A \times B)\]
+\paragraph{}
+A and B are real numbers in [0,1] .
+\paragraph{}
+Here is a J program.
+\begin{verbatim}
+NB. logic functions as arithmetic formulas
+not =: 3 : '1-y'
+and =: 4 : 'x*y'
+or =: 4 : 'x+y-x*y'
+imp =: 4 : '1-(x*(1-y))'
+eqv =: 4 : '(x imp y) * (y imp x)'
+xor =: 4 : '1 - (x eqv y)'
+nand =: 4 : '1-x*y'
+nor =: 4 : '1-x+y-x*y'
+\end{verbatim}
+
+\paragraph{Tautology Conjecture}
+If and only if all results, whereby at least one variable has at least 2 different values, are above 0.5 it can be a tautology.
+
+\paragraph{Contradiction Conjecture}
+If and only if all results, whereby at least one variable has at least 2 different values, are under 0.5 it can be a contradiction.
+
+\paragraph{Contingency Conjecture}
+If neither the Tautology Conjecture nor the Contradictions Conjecture applies, then it is satisfiable but not a tautology.
+\newpage 
+\paragraph{Examples}
+
+It is assumed that the above J program is loaded.
+\begin{verbatim}
+  a=.b=.c=.d=.0.5
+   ((a or b) and (b imp c)) or (c imp d) or (c imp b)
+0.972656
+   a=.0 1
+   ((a or b) and (b imp c)) or (c imp d) or (c imp b)
+0.960938 0.984375
+   a=.a,a
+   b=.0 0 1 1
+   a
+0 1 0 1
+   b
+0 0 1 1
+   ((a or b) and (b imp c)) or (c imp d) or (c imp b)
+0.875 1 1 1
+   a=.0
+   b=.0
+   c=.0 1
+   ((a or b) and (b imp c)) or (c imp d) or (c imp b)
+1 0.5
+NB. Because of the 0.5 you know it is a contingency
+   c=.1
+   d=. 0 1
+   ((a or b) and (b imp c)) or (c imp d) or (c imp b)
+0 1
+\end{verbatim}
+
+\begin{verbatim}
+   a=.b=.0.5
+   (a imp (b imp a))
+0.875
+   a=. 0 1
+   (a imp (b imp a))
+1 1
+
+
+   a=.b=.0.5
+   (a imp (b imp a))
+0.875
+   b=.0 1
+   (a imp (b imp a))
+1 0.75
+   b=.1
+   a=.0 1
+   (a imp (b imp a))
+1 1
+
+\end{verbatim}
+\end{document}
