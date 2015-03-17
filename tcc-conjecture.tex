@@ -18,10 +18,10 @@ The satisfiability problem is not easy. With n variables there are $2^n$ possibi
 is satisfiable, there is a simple method.
 
 
-\[A \land B := A + B - A \times B\]
+\[A \land B := A \times B\]
 \[A \lor B 		:= A + B - A \times B\]
 \[\lnot A := 1 - A\]
-\[A \supset B := 1 - (x \times (1 - y))\]
+\[A \supset B := 1 - (A \times (1 - B))\]
 \[A \equiv B := (A \supset B) \times (B \supset A) \]
 \[A \oplus B := 1 - (A \equiv B)\]
 \[A \bar{\land} B := 1- A \times B\]
